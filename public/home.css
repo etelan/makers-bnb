@@ -1,0 +1,47 @@
+
+body {
+    /* Set our colours, and our degree at which it will gradient */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+
+    /* Make bigger than the window by a lot */
+    background-size: 400% 400%;
+
+    /* How quickly it should switch, and other settings */
+    animation: gradient 15s ease infinite;
+}
+
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.centered {
+
+    /* Gets pos of middle of the screen, no matter the size or scroll. */
+    position: absolute;
+
+    /* Set Margain */
+    top: 50%;
+    left: 50%;
+
+    /* This moves the objects */
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.button_50 {
+
+    padding: 14px 28px;
+    text-align: center;
+    background-color: #e7e7e7; 
+    color: black;
+}
+
