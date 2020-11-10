@@ -1,0 +1,27 @@
+.gray_bck {
+    background-color: #D3D3D3;
+}
+
+body {
+    /* Set our colours, and our degree at which it will gradient */
+    background: linear-gradient(-45deg,#000428,#004e92);
+
+    /* Make bigger than the window by a lot */
+    background-size: 400% 400%;
+
+    /* How quickly it should switch, and other settings */
+    animation: gradient 15s ease infinite;
+}
+
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
