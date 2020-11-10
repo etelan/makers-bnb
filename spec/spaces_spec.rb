@@ -19,10 +19,17 @@ describe Space do
 
   describe '.create' do
     it '.create a new space' do
-      Space.create(name: 'Shed', owner: 'Joe', availability: 'TRUE', description: 'Lots of spiders', date: "TO_DATE('10/11/2020', 'DD/MM/YYYY')", price: 2)
-      connection = PG.connect(dbname: 'makersbnb_test')
-      result = connection.exec('SELECT * FROM spaces')
-      expect(Space.all).to include('Shed')
+      space = Space.create(name: 'Shed', owner: 'Joe', availability: true, description: 'Lots of spiders', date: "10/11/2020", price: 2)
+      persisted_data = PG.connect(dbname: 'makersbnb_test').query("SELECT * FROM spaces WHERE id = #{space.id};")
+
+      expect(space).to be_a Space
+      expect(space.id).to eq persisted_data.first['id']
+      expect(space.name).to eq 'Shed'
+      expect(space.owner).to eq 'Joe'
+      expect(space.availability).to eq "t"
+      expect(space.description).to eq 'Lots of spiders'
+      expect(space.date).to eq "2020-11-10"
+      expect(space.price).to eq "2"
     end
   end
 
