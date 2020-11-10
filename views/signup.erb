@@ -1,0 +1,21 @@
+<link href="<%= url('/home.css') %>" rel="stylesheet" type="text/css" />
+<link href="<%= url('/text.css') %>" rel="stylesheet" type="text/css" />
+
+<div class="bg-text pencil">
+    <h1 class = "large"> Sign Up <h2>
+    <form action='/signup-query' method="post">
+        <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="username" placeholder="username">
+        <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="password" placeholder="password">
+        <br/>
+        <br/>
+        <input type="submit" name="Submit"> 
+    </form>
+    
+    <p style="padding: 14px 28px; font-size:20px"> Already signed up? <a href="/login"><i>Login</i></a> instead. </p>
+
+
+    
+</div>
+
+
+
