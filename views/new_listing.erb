@@ -10,22 +10,24 @@
       opacity: 0.4;
   }
 
-  .red {
-    color: red;
-  }
-
   .transbox p {
     margin: 5%;
     font-weight: bold;
     color: red;
   }
 
-  .transbox h1 {
+  .special_h1 {
     margin: 5%;
     font-weight: bold;
     color: black;
   }
   .transbox h2 {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+
+  .transbox form {
     margin: 5%;
     font-weight: bold;
     color: black;
@@ -39,39 +41,31 @@
     color: #221e1e;
     display: block;
   }
-
-  /* The navigation menu links */
-  .sidenav p {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #221e1e;
-    display: block;
-  }
 </style>
 
 <!-- Side navigation -->
 <div class="sidenav">
   <a href="login">Login</a>
   <a href="sign-up">Signup</a>
-  <a href="search" style="color:#325438;">All Listings</a>
-  <a href="listings">Your Places</a>
+  <a href="search">All Listings</a>
+  <a href="listings" style="color:#325438;">Your Places</a>
   <a href="your-bookings">Your Bookings</a>
   <a href="notifications">Notifications</a>
 </div>
 
 <div class="main" >
+    <h1 style="color:#C0C0C0" class="special_h1"> New Listing </h1>
 
-  <h1 style="color:#C0C0C0"> All Listings </h1>
-  
-
-  <%@places.each do |place|%>
     <div class="transbox">
-
-      <h1> <%=place.name%> </h1>
-      <h2> £<%=place.price%> per night</h2>
-      <p> <%=place.description%> </p>
+      <form>
+        <h1> Enter your details here </h1>
+        <input style="padding: 7px 14px;" type="text" size=30 maxlength=60 name="name" placeholder="Title">
+        &nbsp&nbsp&nbsp&nbsp&nbsp
+        <input style="padding: 7px 14px;" type="text" size=30 maxlength=60 name="price" placeholder="Price">
+        <br><br>
+        <textarea cols="63" rows="10" name="description" placeholder="Description"></textarea>
+      </form>
     </div>
-  <%end%>
+
 
 </div>
