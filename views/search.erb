@@ -50,6 +50,7 @@
   }
 </style>
 
+
 <!-- Side navigation -->
 <div class="sidenav">
   <a href="login">Login</a>
@@ -62,9 +63,9 @@
 
 <div class="main" >
 
-  <h1 style="color:#C0C0C0"> All Listings </h1>
-  
 
+
+   <h1 style="color:#C0C0C0"> <%= @user %> </h1>
   <%@places.each do |place|%>
     <div class="transbox">
 
