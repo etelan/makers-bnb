@@ -11,5 +11,5 @@ end
 
 def add_row_to_users_test_database
   connection = PG.connect(dbname: 'makersbnb_test')
-  connection.exec('INSERT INTO users (username, password) VALUES("Joe", "password");')
+  connection.exec("INSERT INTO users (username, password) VALUES('Joe', 'password');" )
 end
