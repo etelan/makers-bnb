@@ -2,6 +2,11 @@ require 'sinatra/base'
 require_relative './lib/space.rb'
 
 class MakersBnb < Sinatra::Base
+
+  # STAND IN VARIABLE FOR THE USER
+  @@user = "adambaker"
+
+
   get '/' do
     erb :home
   end
@@ -33,16 +38,31 @@ class MakersBnb < Sinatra::Base
   end
 
   get '/listings' do 
-
-    # STAND IN VARIABLE FOR THE USER
-    @user = "adambaker"
-
     @places = Space.all
     erb :listings 
   end
 
-  get '/new-listing' do
+  get '/listings/new' do
     erb :new_listing
+  end
+
+  post '/listings/new' do
+
+    p [:date]
+
+    Space.create(name: params[:name], 
+      owner: @@user, 
+      availability: Space.date_available?(params[:date]), 
+      description: params[:description], 
+      date: params[:date], 
+      price: params[:price])
+
+    redirect '/listings'
+  end
+
+  post 'set-available' do
+    
+    redirect '/listings'
   end
 
   run! if app_file == $0

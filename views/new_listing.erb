@@ -45,25 +45,46 @@
 
 <!-- Side navigation -->
 <div class="sidenav">
-  <a href="login">Login</a>
-  <a href="sign-up">Signup</a>
-  <a href="search">All Listings</a>
-  <a href="listings" style="color:#325438;">Your Places</a>
-  <a href="your-bookings">Your Bookings</a>
-  <a href="notifications">Notifications</a>
+  <a href="/login">Login</a>
+  <a href="/sign-up">Signup</a>
+  <a href="/search">All Listings</a>
+  <a href="/listings" style="color:#325438;">Your Places</a>
+  <a href="/your-bookings">Your Bookings</a>
+  <a href="/notifications">Notifications</a>
 </div>
 
 <div class="main" >
     <h1 style="color:#C0C0C0" class="special_h1"> New Listing </h1>
 
     <div class="transbox">
-      <form>
+
+      <form action="/listings/new" method="post">
+
         <h1> Enter your details here </h1>
-        <input style="padding: 7px 14px;" type="text" size=30 maxlength=60 name="name" placeholder="Title">
-        &nbsp&nbsp&nbsp&nbsp&nbsp
-        <input style="padding: 7px 14px;" type="text" size=30 maxlength=60 name="price" placeholder="Price">
+
+        <input style="padding: 7px 20px;" type="text" size=30 maxlength=60 name="name" placeholder="Title">
+        
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        
+        <input style="padding: 7px 25px;" type="number" step="0.01" size=30 maxlength=60 name="price" placeholder="Price">
+        
         <br><br>
+        
         <textarea cols="63" rows="10" name="description" placeholder="Description"></textarea>
+        
+        <br><br><br>
+
+        <label for="available"> Available After </label>
+
+        <br><br>
+
+        <input type="date" id="date" name="date"
+        value="2020-11-10"
+        min="2020-1-1" max="2030-11-10">
+
+        <br><br><br>
+        
+        <input type="submit" value="Submit" style="padding: 7px 14px;" name="Submit" id="submit" />
       </form>
     </div>
 
