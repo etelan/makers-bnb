@@ -22,13 +22,13 @@ class Space
     result = connection.exec('SELECT * FROM spaces')
     result.map {|space| 
       Space.new(
-        space['id'], 
-        space['name'], 
-        space['owner'], 
-        space['availability'], 
-        space['description'],
-        space['date'],
-        space['price'],        
+        id: space['id'], 
+        name: space['name'], 
+        owner: space['owner'], 
+        availability: space['availability'], 
+        description: space['description'],
+        date: space['date'],
+        price: space['price'],        
         )}
 
   end
