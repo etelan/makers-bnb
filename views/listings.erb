@@ -10,10 +10,6 @@
       opacity: 0.4;
   }
 
-  .red {
-    color: red;
-  }
-
   .transbox p {
     margin: 5%;
     font-weight: bold;
@@ -39,39 +35,36 @@
     color: #221e1e;
     display: block;
   }
-
-  /* The navigation menu links */
-  .sidenav p {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #221e1e;
-    display: block;
-  }
 </style>
 
 <!-- Side navigation -->
 <div class="sidenav">
   <a href="login">Login</a>
   <a href="sign-up">Signup</a>
-  <a href="search" style="color:#325438;">All Listings</a>
-  <a href="listings">Your Places</a>
+  <a href="search">All Listings</a>
+  <a href="listings" style="color:#325438;">Your Places</a>
   <a href="your-bookings">Your Bookings</a>
   <a href="notifications">Notifications</a>
 </div>
 
 <div class="main" >
+    <h1 style="color:#C0C0C0"> Your Listings </h1>
 
-  <h1 style="color:#C0C0C0"> All Listings </h1>
-  
+    <%@places.each do |place|%>
 
-  <%@places.each do |place|%>
-    <div class="transbox">
+      <!-- If the current signed in user is the owner, show it.-->
+      <%if place.owner == @user%>
 
-      <h1> <%=place.name%> </h1>
-      <h2> £<%=place.price%> per night</h2>
-      <p> <%=place.description%> </p>
-    </div>
-  <%end%>
+        <div class="transbox">
+          <h1> <%=place.name%> </h1>
+          <h2> £<%=place.price%> per night</h2>
+          <p> <%=place.description%> </p>
+          <p> <%=place.owner%> </p>
+        </div>
+
+      <%end%>
+
+    <%end%>
+
 
 </div>
