@@ -1,16 +1,23 @@
+<!-- Import Stylesheets -->
 <link href="<%= url('/home.css') %>" rel="stylesheet" type="text/css" />
 <link href="<%= url('/text.css') %>" rel="stylesheet" type="text/css" />
 
+<!-- Set Font and put into a box -->
 <div class="bg-text pencil">
+    <!-- Title -->
     <h1 class = "large"> Login <h2>
+
+    
     <form action='/login-query' method="post">
-        <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="username" placeholder="username">
-        <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="password" placeholder="password">
+        <!-- Make required, and hide the password box -->
+        <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="username" placeholder="username" required>
+        <input style="padding: 7px 14px;" type="password" size=30 maxlength=29 name="password" placeholder="password" required>
         <br/>
         <br/>
         <input type="submit" name="Submit"> 
     </form>
     
+    <!-- Add option to signin if signed up -->
     <p style="padding: 14px 28px; font-size:20px"> Don't have a login? <a href="/sign-up"><i>Sign up</i></a> instead. </p>
 
 
