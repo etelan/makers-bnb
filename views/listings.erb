@@ -16,6 +16,12 @@
     color: red;
   }
 
+  .transbox form {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
   .transbox h1 {
     margin: 5%;
     font-weight: bold;
@@ -47,19 +53,47 @@
   <a href="notifications">Notifications</a>
 </div>
 
+<!-- Everything not in the sidebar -->
 <div class="main" >
+
+    <!-- Title -->
     <h1 style="color:#C0C0C0"> Your Listings </h1>
 
+    <!-- Take us to listings new -->
+    <form action="/listings/new" method="get">
+      <input type="submit" value="New Listing" 
+            name="Submit" id="new" />
+    </form>
+
+    <!-- For each place -->
     <%@places.each do |place|%>
 
       <!-- If the current signed in user is the owner, show it.-->
-      <%if place.owner == @user%>
+      <%if place.owner == @@user%>
 
         <div class="transbox">
           <h1> <%=place.name%> </h1>
           <h2> £<%=place.price%> per night</h2>
           <p> <%=place.description%> </p>
-          <p> <%=place.owner%> </p>
+          <p> <%=place.date%> </p>
+
+          <!-- If it is available, show the button that says available. -->
+          <% if place.availability %>
+
+            <form action='/available-set' method='post'>
+              <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+              <input type="submit" name="available-toggle" value="Available"> 
+            </form>
+
+          <!-- If it isnt available, show the button that says unavailable. -->
+          <% else %>
+
+            <form action='/available-set' method='post'>
+              <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+              <input type="submit" name="available-toggle" value="Unavailable"> 
+            </form>
+          <% end %>
+
         </div>
 
       <%end%>

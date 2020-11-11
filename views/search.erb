@@ -50,6 +50,7 @@
   }
 </style>
 
+
 <!-- Side navigation -->
 <div class="sidenav">
   <a href="login">Login</a>
@@ -60,17 +61,21 @@
   <a href="notifications">Notifications</a>
 </div>
 
+<!-- Not in the side -->
 <div class="main" >
 
+
+  <!-- Title -->
   <h1 style="color:#C0C0C0"> All Listings </h1>
   
-
+  <!-- Print out each place in a box -->
   <%@places.each do |place|%>
     <div class="transbox">
 
       <h1> <%=place.name%> </h1>
       <h2> £<%=place.price%> per night</h2>
       <p> <%=place.description%> </p>
+      <p> Owner: <%=place.owner%> </p>
     </div>
   <%end%>
 
