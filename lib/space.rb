@@ -1,9 +1,11 @@
 require 'pg'
+require 'time'
+
 class Space
 
-  attr_accessor :id, :name, :owner, :availability, :description, :date, :price
+  attr_reader :id, :name, :owner, :availability, :description, :date, :price
 
-  def initialize(id, name, owner, availability, description, date, price)
+  def initialize(id:,name:, owner:, availability:, description:, date:, price:)
     @id = id
     @name = name
     @owner = owner
@@ -13,7 +15,6 @@ class Space
     @price = price 
   end
 
-
   def self.all
     if ENV['RACK_ENV'] == 'test'
       connection = PG.connect(dbname: 'makersbnb_test') #name is slightly different
@@ -21,15 +22,16 @@ class Space
       connection = PG.connect(dbname: 'makersbnb')
     end
     result = connection.exec('SELECT * FROM spaces')
+
     result.map {|space| 
       Space.new(
-        space['id'], 
-        space['name'], 
-        space['owner'], 
-        space['availability'], 
-        space['description'],
-        space['date'],
-        space['price'],        
+        id: space['id'], 
+        name: space['name'], 
+        owner: space['owner'], 
+        availability: space['availability'], 
+        description: space['description'],
+        date: space['date'],
+        price: space['price'],        
         )}
 
   end
@@ -38,11 +40,22 @@ class Space
     if ENV['RACK_ENV'] == 'test'
       connection = PG.connect(dbname: 'makersbnb_test') #name is slightly different
     else
-      connection = PG.connect(dbname: 'MakersBnb')
+      connection = PG.connect(dbname: 'makersbnb')
     end
-
-    add_row_to_places_test_database
-
+    p "INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE(#{date}, 'YYYY/MM/DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;"
+    result = connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE('#{date}', 'YYYY/MM/DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;")
+     p Space.new(id: result[0]['id'] , name: result[0]['name'], owner: result[0]['owner'], availability: result[0]['availability'], description: result[0]['description'], date: result[0]['date'] , price: result[0]['price'] )
   end
+
+  # This Function is run when it is created. 
+  # If the date set is before today,
+  def self.date_available?(date)
+    time_now = Time.now.strftime('%F')
+    compare = date
+
+    time_now > compare
+  end
+
+
 
 end
