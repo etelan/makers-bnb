@@ -33,4 +33,20 @@ describe User do
     expect(User.all.length).to eq 0
     end
   end
+  #fail if password and username incorrect (2 clauses), can't sign in if already signed in
+  describe 'sign_in' do
+    it "sign user in" do
+      user = User.create(username: 'jack_black', password: 'hello123' )
+      user.sign_in(username: 'jack_black', password: 'hello123')
+      expect(user.signed_in?).to eq true
+    end
+    it "fail if username is incorrect" do
+      user = User.create(username: 'jack_black', password: 'hello123' )
+      expect {user.sign_in(username: 'Joe', password: 'hello123')}.to raise_error("Your username doesn't exist")
+    end
+    it "fail if password is incorrect" do
+      user = User.create(username: 'jack_black', password: 'hello123' )
+      expect {user.sign_in(username: 'jack_black', password: 'yolo')}.to raise_error("Your password is incorrect")
+    end
+  end
 end
