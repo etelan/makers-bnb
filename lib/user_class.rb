@@ -17,7 +17,12 @@ class User
       connection = PG.connect(dbname: 'makersbnb')
     end
     result = connection.exec('SELECT * FROM users')
-    result.map { |user| user['username']}
+    result.map { |user|
+    User.new(
+      id: user['id'],
+      username: user['username'],
+      password: user['password']
+      )}
   end
 
 
@@ -45,12 +50,14 @@ class User
     @signed_in
   end
 
-  def self.sign_in(username:, password:)
-    raise "Your password is incorrect" if authentication(username, password)
+  def sign_in(username:, password:)
+    raise "Your password is incorrect" if User.authentication(username, password)
     @signed_in = true
-    return "Welcome"
   end
 
+  def sign_out
+    @signed_in = false
+  end
 
   private
 
@@ -60,8 +67,13 @@ class User
     else
       connection = PG.connect(dbname: 'makersbnb')
     end
-
-    raise "Your username doesn't exist" unless User.all.include?(username)
+    count = 0
+    User.all.each {|user| if user.username == username
+    count += 1
+    end
+    raise "Your username doesn't exist" if count < 1
+    }
+    
     result = connection.exec("SELECT * FROM users WHERE username = '#{username}' ")
     result[0]['password'] != password ? true : false
 
