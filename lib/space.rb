@@ -42,7 +42,7 @@ class Space
     else
       connection = PG.connect(dbname: 'makersbnb')
     end
-    p "INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE(#{date}, 'DD/MM/YYYY'), #{price}) RETURNING id, name, owner, availability, description, date, price ;"
+    p "INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE(#{date}, 'YYYY/MM/DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;"
     result = connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE('#{date}', 'YYYY/MM/DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;")
      p Space.new(id: result[0]['id'] , name: result[0]['name'], owner: result[0]['owner'], availability: result[0]['availability'], description: result[0]['description'], date: result[0]['date'] , price: result[0]['price'] )
   end

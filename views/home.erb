@@ -1,14 +1,20 @@
+<!-- Import Style Sheets-->
 <link href="<%= url('/home.css') %>" rel="stylesheet" type="text/css" />
 <link href="<%= url('/text.css') %>" rel="stylesheet" type="text/css" />
 
+<!-- Put into the center of the page, set font to pencil, and size to large-->
 <div class="centered pencil large">
-    <h1 class = "large"> MakersBnB <h2>
+    <!-- Title -->
+    <h2> MakersBnB </h2>
+
+    <!-- Float the button to the left, and pad it-->
     <div style='float: left; padding: 5px;'>
         <form action='/sign-up' >
             <button class="button_50"> Sign Up </button>
         </form>
     </div>
 
+    <!-- Float the button to the right, and pad it-->
     <div style='float: right; padding: 5px;'>
         <form action='/login' >
             <button class="button_50"> Login </button>
@@ -16,6 +22,8 @@
     </div>
     
 </div>
+
+
 
 
 
