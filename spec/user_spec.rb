@@ -8,7 +8,8 @@ describe User do
     it 'returns all usernames' do
       add_row_to_users_test_database
       connection = PG.connect(dbname: 'makersbnb_test')
-      expect(User.all).to include "Joe"
+      expect(User.all[0].username).to eq "Joe"
+      expect(User.all[0].password).to eq "password"
 
     end
   end
@@ -42,6 +43,7 @@ describe User do
     end
     it "fail if username is incorrect" do
       user = User.create(username: 'jack_black', password: 'hello123' )
+      User.create(username: 'jack', password: 'hello123' )
       expect {user.sign_in(username: 'Joe', password: 'hello123')}.to raise_error("Your username doesn't exist")
     end
     it "fail if password is incorrect" do

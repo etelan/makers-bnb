@@ -6,7 +6,7 @@ end
 
 def add_row_to_places_test_database
   connection = PG.connect(dbname: 'makersbnb_test')
-  connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('Shed', 'Joe', TRUE, 'Lots of spiders', TO_DATE('10/11/2020', 'DD/MM/YYYY'), 2);")
+  connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('Shed', 'Joe', TRUE, 'Lots of spiders', TO_DATE('2020-11-10', 'YYYY-MM-DD'), 2);")
 end
 
 def add_row_to_users_test_database
