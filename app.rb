@@ -1,14 +1,17 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative './lib/space.rb'
 require_relative './lib/user_class.rb'
 
 class MakersBnb < Sinatra::Base
+  register Sinatra::Flash
   enable :sessions
   set :session_secret, 'Here be Dragons'
 
-  # STAND IN VARIABLE FOR THE USER
-  @@user = "adambaker"
 
+  # before do
+  #   @user = User.instance
+  # end
 
   get '/' do
     erb :home
@@ -23,29 +26,39 @@ class MakersBnb < Sinatra::Base
   end
 
   post '/login-query' do
-    redirect '/error_page' if session[:user].nil?
-    user = User.all.select {|user| user.username == params[:username]}
-    session[:user] = user.shift
-    session[:user].sign_in(username: params[:username],password: params[:password])
+    # redirect '/error_page' if session[:user].nil?
+     @user = User.sign_in(username: params[:username],password: params[:password])
+
+    if @user
+      @user
+      session[:user_id] = @user.id
+      p session[:user_id]
+      redirect 'search'
+    else flash[:notice] = 'Please check your username or password.'
+    redirect('/login')
+    end
+    # session[:user].sign_in(username: params[:username],password: params[:password])
     # Login verification goes here.
-    redirect 'search'
   end
 
   post '/signup-query' do
-    session[:user] = User.create(username: params[:username],password: params[:password])
-    session[:user].sign_in(username: params[:username],password: params[:password])
-    # Signup verification goes here.
-    # Login verification goes here.
+    User.create(username: params[:username],password: params[:password])
+    @user = User.sign_in(username: params[:username],password: params[:password])
+    session[:user_id] = @user.id
     redirect 'search'
   end
 
   get '/search' do
+    p session[:user_id]
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :search
   end
 
   get '/listings' do
-    p session[:user].username
+    p "Hello"
+    p session[:user_id]
+    p @user = User.find(session[:user_id])
     @places = Space.all
     erb :listings
   end

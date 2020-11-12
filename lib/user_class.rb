@@ -1,13 +1,16 @@
 require 'pg'
+require 'bcrypt'
 
 class User
 
   attr_reader :id, :username, :password, :signed_in
+  attr_writer :signed_in
 
   def initialize(id:, username:, password:)
   @id = id
   @username = username
   @password = password
+  @signed_in = false
   end
 
   def self.all
@@ -32,9 +35,20 @@ class User
     else
       connection = PG.connect(dbname: 'makersbnb')
     end
-    result = connection.exec("INSERT INTO users (username, password) VALUES('#{username}', '#{password}') RETURNING id, username, password;")
-    User.new(id: result[0]['id'], username: result[0]['username'], password: result[0]['password'])
+    encrypted_password = BCrypt::Password.create(password)
+    result = connection.exec("INSERT INTO users (username, password) VALUES('#{username}', '#{encrypted_password}') RETURNING id, username, password;")
+    @user = User.new(id: result[0]['id'], username: result[0]['username'], password: result[0]['password'])
+  end
 
+  def self.find(number)
+    if ENV['RACK_ENV'] == 'test'
+      connection = PG.connect(dbname: 'makersbnb_test')
+    else
+      connection = PG.connect(dbname: 'makersbnb')
+    end
+     result = connection.exec("SELECT * FROM users WHERE id = #{number}")
+     User.new(id: result[0]['id'], username: result[0]['username'], password: result[0]['password'])
+     # @id = session[:user_id]
   end
 
   def self.delete(id:)
@@ -50,16 +64,22 @@ class User
     @signed_in
   end
 
-  def sign_in(username:, password:)
-    raise "Your password is incorrect" if User.authentication(username, password)
-    @signed_in = true
+  def self.sign_in(username:, password:)
+
+    user = User.authentication(username, password)
+    if user.nil?
+      user
+    else
+      user.signed_in = true
+      user
+    end
+    # raise "Your password is incorrect" if User.authentication(username, password)
+    # @signed_in = true
   end
 
   def sign_out
     @signed_in = false
   end
-
-  private
 
   def self.authentication(username, password)
     if ENV['RACK_ENV'] == 'test'
@@ -67,16 +87,11 @@ class User
     else
       connection = PG.connect(dbname: 'makersbnb')
     end
-    count = 0
-    User.all.each {|user| if user.username == username
-    count += 1
-    end
-    raise "Your username doesn't exist" if count < 1
-    }
-    
-    result = connection.exec("SELECT * FROM users WHERE username = '#{username}' ")
-    result[0]['password'] != password ? true : false
+    result = connection.query("SELECT * FROM users WHERE username = '#{username}'")
+    return unless result.any?
+    return unless BCrypt::Password.new(result[0]['password']) == password
 
+    User.new(id: result[0]['id'], username: result[0]['username'], password: result[0]['password'])
   end
 
 
