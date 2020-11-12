@@ -6,8 +6,9 @@
 <div class="bg-text pencil">
     <!-- Title -->
     <h1 class = "large"> Login <h2>
+    <h2> <%= flash[:notice] %> </h2>
 
-    
+
     <form action='/login-query' method="post">
         <!-- Make required, and hide the password box -->
         <input style="padding: 7px 14px;" type="text" size=30 maxlength=29 name="username" placeholder="username" required>
@@ -16,7 +17,7 @@
         <br/>
         <input type="submit" name="Submit">
     </form>
-    
+
     <!-- Add option to signin if signed up -->
     <p style="padding: 14px 28px; font-size:20px"> Don't have a login? <a href="/sign-up"><i>Sign up</i></a> instead. </p>
 

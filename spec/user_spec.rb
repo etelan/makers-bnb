@@ -8,7 +8,8 @@ describe User do
     it 'returns all usernames' do
       add_row_to_users_test_database
       connection = PG.connect(dbname: 'makersbnb_test')
-      expect(User.all).to include "Joe"
+      expect(User.all[0].username).to eq "Joe"
+      expect(User.all[0].password).to eq "password"
 
     end
   end
@@ -21,7 +22,7 @@ describe User do
     expect(user).to be_a User
     expect(user.id).to eq persisted_data.first['id']
     expect(user.username).to eq 'jack_black'
-    expect(user.password).to eq 'hello123'
+    expect(BCrypt::Password.new(user.password)).to eq 'hello123'
     end
   end
   describe '.delete' do
@@ -37,16 +38,19 @@ describe User do
   describe 'sign_in' do
     it "sign user in" do
       user = User.create(username: 'jack_black', password: 'hello123' )
-      user.sign_in(username: 'jack_black', password: 'hello123')
-      expect(user.signed_in?).to eq true
+      authenticated_user = User.sign_in(username: 'jack_black', password: 'hello123' )
+
+      expect(authenticated_user.signed_in?).to eq true
     end
     it "fail if username is incorrect" do
-      user = User.create(username: 'jack_black', password: 'hello123' )
-      expect {user.sign_in(username: 'Joe', password: 'hello123')}.to raise_error("Your username doesn't exist")
+        user = User.create(username: 'jack_black', password: 'password')
+
+        expect(User.sign_in(username: 'joe', password: 'password')).to be_nil
     end
     it "fail if password is incorrect" do
-      user = User.create(username: 'jack_black', password: 'hello123' )
-      expect {user.sign_in(username: 'jack_black', password: 'yolo')}.to raise_error("Your password is incorrect")
+        user = User.create(username: 'jack_black', password: 'password')
+
+        expect(User.sign_in(username: 'jack_black', password: 'password123')).to be_nil
     end
   end
 end

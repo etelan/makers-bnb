@@ -1,14 +1,16 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative './lib/space.rb'
 require_relative './lib/user_class.rb'
 
 class MakersBnb < Sinatra::Base
-
-  # STAND IN VARIABLE FOR THE USER
-  @@user = "adambaker"
+  enable :sessions
+  set :session_secret, 'Here be Dragons'
+  register Sinatra::Flash
 
 
   get '/' do
+    session.clear
     erb :home
   end
 
@@ -20,30 +22,36 @@ class MakersBnb < Sinatra::Base
     erb :signup
   end
 
-  get '/login-query' do
-    @@lampost = User.sign_in(username: params[:username],password: params[:password])
+  post '/login-query' do
+    # redirect '/error_page' if session[:user].nil?
+     @user = User.sign_in(username: params[:username],password: params[:password])
+
+    if @user
+      @user
+      session[:user_id] = @user.id
+      redirect '/search'
+    else flash[:notice] = 'Please check your username or password.'
+    redirect('/login')
+    end
+    # session[:user].sign_in(username: params[:username],password: params[:password])
     # Login verification goes here.
-    p @@lampost
-    redirect 'search'
   end
 
   post '/signup-query' do
-    # Signup verification goes here.
-    # Login verification goes here.
-
-    redirect 'search'
+    User.create(username: params[:username],password: params[:password])
+    @user = User.sign_in(username: params[:username],password: params[:password])
+    session[:user_id] = @user.id
+    redirect '/search'
   end
 
   get '/search' do
-    p @@lampost
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :search
   end
 
   get '/listings' do
-
-    # STAND IN VARIABLE FOR THE USER
-    @user = "adambaker"
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :listings
   end
@@ -55,20 +63,24 @@ class MakersBnb < Sinatra::Base
   post '/listings/new' do
 
     p [:date]
-
-    Space.create(name: params[:name], 
-      owner: @@user, 
-      availability: Space.date_available?(params[:date]), 
-      description: params[:description], 
-      date: params[:date], 
+    @user = User.find(session[:user_id])
+    Space.create(name: params[:name],
+      owner: @user.username,
+      availability: Space.date_available?(params[:date]),
+      description: params[:description],
+      date: params[:date],
       price: params[:price])
 
     redirect '/listings'
   end
 
   post 'set-available' do
-    
+
     redirect '/listings'
+  end
+
+  get '/error_page' do
+    "ERROORRRR"
   end
 
   run! if app_file == $0

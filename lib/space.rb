@@ -12,7 +12,7 @@ class Space
     @availability = availability
     @description = description
     @date = date
-    @price = price 
+    @price = price
   end
 
   def self.all
@@ -23,15 +23,15 @@ class Space
     end
     result = connection.exec('SELECT * FROM spaces')
 
-    result.map {|space| 
+    result.map {|space|
       Space.new(
-        id: space['id'], 
-        name: space['name'], 
-        owner: space['owner'], 
-        availability: space['availability'], 
+        id: space['id'],
+        name: space['name'],
+        owner: space['owner'],
+        availability: space['availability'],
         description: space['description'],
         date: space['date'],
-        price: space['price'],        
+        price: space['price'],
         )}
 
   end
@@ -42,13 +42,12 @@ class Space
     else
       connection = PG.connect(dbname: 'makersbnb')
     end
-
-    result = connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE('#{date}', 'YYYY/MM/DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;")
+    result = connection.exec("INSERT INTO spaces (name, owner, availability, description, date, price) VALUES('#{name}', '#{owner}', #{availability}, '#{description}', TO_DATE('#{date}', 'YYYY-MM-DD'), #{price}) RETURNING id, name, owner, availability, description, date, price ;")
     Space.new(id: result[0]['id'] , name: result[0]['name'], owner: result[0]['owner'], availability: result[0]['availability'], description: result[0]['description'], date: result[0]['date'] , price: result[0]['price'] )
 
   end
 
-  # This Function is run when it is created. 
+  # This Function is run when it is created.
   # If the date set is before today,
   def self.date_available?(date)
     time_now = Time.now.strftime('%F')
