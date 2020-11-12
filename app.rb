@@ -4,16 +4,13 @@ require_relative './lib/space.rb'
 require_relative './lib/user_class.rb'
 
 class MakersBnb < Sinatra::Base
-  register Sinatra::Flash
   enable :sessions
   set :session_secret, 'Here be Dragons'
+  register Sinatra::Flash
 
-
-  # before do
-  #   @user = User.instance
-  # end
 
   get '/' do
+    session.clear
     erb :home
   end
 
@@ -32,8 +29,7 @@ class MakersBnb < Sinatra::Base
     if @user
       @user
       session[:user_id] = @user.id
-      p session[:user_id]
-      redirect 'search'
+      redirect '/search'
     else flash[:notice] = 'Please check your username or password.'
     redirect('/login')
     end
@@ -45,20 +41,17 @@ class MakersBnb < Sinatra::Base
     User.create(username: params[:username],password: params[:password])
     @user = User.sign_in(username: params[:username],password: params[:password])
     session[:user_id] = @user.id
-    redirect 'search'
+    redirect '/search'
   end
 
   get '/search' do
-    p session[:user_id]
     @user = User.find(session[:user_id])
     @places = Space.all
     erb :search
   end
 
   get '/listings' do
-    p "Hello"
-    p session[:user_id]
-    p @user = User.find(session[:user_id])
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :listings
   end
@@ -70,9 +63,9 @@ class MakersBnb < Sinatra::Base
   post '/listings/new' do
 
     p [:date]
-
+    @user = User.find(session[:user_id])
     Space.create(name: params[:name],
-      owner: session[:user].name,
+      owner: @user.username,
       availability: Space.date_available?(params[:date]),
       description: params[:description],
       date: params[:date],
