@@ -1,16 +1,16 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative './lib/space.rb'
 require_relative './lib/user_class.rb'
 
 class MakersBnb < Sinatra::Base
   enable :sessions
   set :session_secret, 'Here be Dragons'
-
-  # STAND IN VARIABLE FOR THE USER
-  @@user = "adambaker"
+  register Sinatra::Flash
 
 
   get '/' do
+    session.clear
     erb :home
   end
 
@@ -23,29 +23,35 @@ class MakersBnb < Sinatra::Base
   end
 
   post '/login-query' do
-    redirect '/error_page' if session[:user].nil?
-    user = User.all.select {|user| user.username == params[:username]}
-    session[:user] = user.shift
-    session[:user].sign_in(username: params[:username],password: params[:password])
+    # redirect '/error_page' if session[:user].nil?
+     @user = User.sign_in(username: params[:username],password: params[:password])
+
+    if @user
+      @user
+      session[:user_id] = @user.id
+      redirect '/search'
+    else flash[:notice] = 'Please check your username or password.'
+    redirect('/login')
+    end
+    # session[:user].sign_in(username: params[:username],password: params[:password])
     # Login verification goes here.
-    redirect 'search'
   end
 
   post '/signup-query' do
-    session[:user] = User.create(username: params[:username],password: params[:password])
-    session[:user].sign_in(username: params[:username],password: params[:password])
-    # Signup verification goes here.
-    # Login verification goes here.
-    redirect 'search'
+    User.create(username: params[:username],password: params[:password])
+    @user = User.sign_in(username: params[:username],password: params[:password])
+    session[:user_id] = @user.id
+    redirect '/search'
   end
 
   get '/search' do
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :search
   end
 
   get '/listings' do
-    p session[:user].username
+    @user = User.find(session[:user_id])
     @places = Space.all
     erb :listings
   end
@@ -57,9 +63,9 @@ class MakersBnb < Sinatra::Base
   post '/listings/new' do
 
     p [:date]
-
+    @user = User.find(session[:user_id])
     Space.create(name: params[:name],
-      owner: session[:user].name,
+      owner: @user.username,
       availability: Space.date_available?(params[:date]),
       description: params[:description],
       date: params[:date],

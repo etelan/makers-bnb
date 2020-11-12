@@ -51,7 +51,7 @@
   <a href="listings" style="color:#325438;">Your Places</a>
   <a href="your-bookings">Your Bookings</a>
   <a href="notifications">Notifications</a>
-  <a href="/" <%session[:user].sign_out%> >Sign out</a>
+  <a href="/">Sign Out</a>
 </div>
 
 <!-- Everything not in the sidebar -->
@@ -70,7 +70,7 @@
     <%@places.each do |place|%>
 
       <!-- If the current signed in user is the owner, show it.-->
-      <%if place.owner == session[:user].username%>
+      <%if place.owner == @user.username%>
 
         <div class="transbox">
           <h1> <%=place.name%> </h1>
