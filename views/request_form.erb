@@ -1,0 +1,107 @@
+<link href="<%= url('/sidebar.css') %>" rel="stylesheet" type="text/css" />
+<link href="<%= url('/home.css') %>" rel="stylesheet" type="text/css" />
+<link href="<%= url('/search.css') %>" rel="stylesheet" type="text/css" />
+
+<style>
+  .transbox {
+      margin: 30px;
+      background-color: #ffffff;
+      border: 1px solid black;
+      opacity: 0.4;
+  }
+
+  .transbox h1 {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
+  .transbox p {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
+  .special_h1 {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+  .transbox h2 {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+
+  .transbox form {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #221e1e;
+    display: block;
+  }
+</style>
+
+<!-- Side navigation -->
+<div class="sidenav">
+  <a href="/login">Login</a>
+  <a href="/sign-up">Signup</a>
+  <a href="/search" style="color:#325438;">All Listings</a>
+  <a href="/listings" >Your Places</a>
+  <a href="/your-bookings">Your Bookings</a>
+  <a href="/notifications">Notifications</a>
+  <a href="/">Sign Out</a>
+</div>
+
+<!-- Main Area -->
+<div class="main" >
+
+    <!-- Title -->
+    <h1 style="color:#C0C0C0" class="special_h1"> Request </h1>
+
+    <!-- Put into a transparent box -->
+    <div class="transbox">
+      <h1> Name: <%=@place.name%> </h1>
+      <h2> <i> Description </i> </h2>
+      <p> <%=@place.description%> </p>
+      <h2> £<%=@place.price%>/night </h2>
+    </div>
+
+    <!-- Put into a transparent box -->
+    <div class="transbox">
+
+      <h1> Enter your details here </h1>
+
+      <!-- Post the new stuff -->
+      <form action="/request-handler" >       
+
+        <input style="padding: 7px 20px;" type="text" size=30 maxlength=60 name="email" placeholder="billgates@microsoft.com">
+
+        <!-- Space them out -->
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+        <input style="padding: 7px 25px;" type="number" step="1" size=30 maxlength=60 name="number" placeholder="7783302389">
+
+        <br><br>
+
+        <textarea cols="63" rows="10" name="note" placeholder="Note"></textarea>
+
+        <br><br><br>
+
+        <label for="date"> When (currently it will be a request for immediate booking, and lasting a week) </label>
+
+        <br><br><br>
+
+        <input type="submit" value="Submit" style="padding: 7px 14px;" id="submit" />
+      </form>
+    </div>
+
+
+</div>

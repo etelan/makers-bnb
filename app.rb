@@ -53,6 +53,12 @@ class MakersBnb < Sinatra::Base
     erb :listings
   end
 
+  get '/request' do
+    @user = User.find(session[:user_id])
+    @place = Space.find(params[:id])
+    erb :request_form
+  end
+
   get '/listings/new' do
     erb :new_listing
   end

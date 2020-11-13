@@ -4,6 +4,7 @@ require 'time'
 class Space
 
   attr_reader :id, :name, :owner, :availability, :description, :date, :price
+  attr_writer :availability
 
   def initialize(id:,name:, owner:, availability:, description:, date:, price:)
     @id = id
@@ -14,6 +15,20 @@ class Space
     @date = date
     @price = price
   end
+
+  def self.find(number)
+    if ENV['RACK_ENV'] == 'test'
+      connection = PG.connect(dbname: 'makersbnb_test')
+    else
+      connection = PG.connect(dbname: 'makersbnb')
+    end
+     result = connection.exec("SELECT * FROM spaces WHERE id = #{number}")
+     
+     Space.new(id: result[0]['id'], name: result[0]['name'], owner: result[0]['owner'],
+      availability: result[0]['availability'], description: result[0]['description'],
+      date: result[0]['date'], price: result[0]['price'])
+  end
+
 
   def self.all
     if ENV['RACK_ENV'] == 'test'

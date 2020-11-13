@@ -20,6 +20,12 @@
     color: red;
   }
 
+  .transbox form {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
   .transbox h1 {
     margin: 5%;
     font-weight: bold;
@@ -77,6 +83,13 @@
       <h2> £<%=place.price%> per night</h2>
       <p> <%=place.description%> </p>
       <p> Owner: <%=place.owner%> </p>
+
+      <p> ID: <%=place.id%> </p>
+
+      <form action="/request">
+        <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+        <input type="submit" id="request" value="Make Request">
+      </form>
     </div>
   <%end%>
 
