@@ -80,7 +80,7 @@
       <h1> Enter your details here </h1>
 
       <!-- Post the new stuff -->
-      <form action="/request-handler" >       
+      <form action="/request-handler" method="post" >       
 
         <input style="padding: 7px 20px;" type="text" size=30 maxlength=60 name="email" placeholder="billgates@microsoft.com">
 
@@ -98,6 +98,8 @@
         <label for="date"> When (currently it will be a request for immediate booking, and lasting a week) </label>
 
         <br><br><br>
+
+        <input type="hidden" id="id" name="id" value=<%=@place.id%>>
 
         <input type="submit" value="Submit" style="padding: 7px 14px;" id="submit" />
       </form>

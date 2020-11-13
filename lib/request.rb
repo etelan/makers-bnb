@@ -2,7 +2,7 @@ require 'pg'
 
 
 class Request
-  attr_accesor :approved
+  attr_accessor :approved
 
   def initialize
   @approved = false

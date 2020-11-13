@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require_relative './lib/space.rb'
 require_relative './lib/user_class.rb'
+require_relative './lib/request.rb'
 
 class MakersBnb < Sinatra::Base
   enable :sessions
@@ -80,10 +81,11 @@ class MakersBnb < Sinatra::Base
     redirect '/listings'
   end
 
-  post 'set-available' do
-
-    redirect '/listings'
-  end
+  post '/request-handler' do 
+    @id = params[:id]
+    Request.accept(id: @id.to_i)
+    redirect '/search'
+  end 
 
   get '/error_page' do
     "ERROORRRR"
