@@ -23,7 +23,6 @@ class MakersBnb < Sinatra::Base
   end
 
   post '/login-query' do
-    # redirect '/error_page' if session[:user].nil?
      @user = User.sign_in(username: params[:username],password: params[:password])
 
     if @user
@@ -33,8 +32,6 @@ class MakersBnb < Sinatra::Base
     else flash[:notice] = 'Please check your username or password.'
     redirect('/login')
     end
-    # session[:user].sign_in(username: params[:username],password: params[:password])
-    # Login verification goes here.
   end
 
   post '/signup-query' do
@@ -77,10 +74,6 @@ class MakersBnb < Sinatra::Base
   post 'set-available' do
 
     redirect '/listings'
-  end
-
-  get '/error_page' do
-    "ERROORRRR"
   end
 
   run! if app_file == $0
