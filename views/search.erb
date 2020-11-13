@@ -77,20 +77,23 @@
 
   <!-- Print out each place in a box -->
   <%@places.each do |place|%>
-    <div class="transbox">
+    <% if place.availability == "t"%>
+      <div class="transbox">
 
-      <h1> <%=place.name%> </h1>
-      <h2> £<%=place.price%> per night</h2>
-      <p> <%=place.description%> </p>
-      <p> Owner: <%=place.owner%> </p>
+        <h1> <%=place.name%> </h1>
+        <h2> £<%=place.price%> per night</h2>
+        <p> <%=place.description%> </p>
+        <p> Owner: <%=place.owner%> </p>
+        <p> Available: <%=place.availability%> </p>
 
-      <p> ID: <%=place.id%> </p>
+        <p> ID: <%=place.id%> </p>
 
-      <form action="/request">
-        <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
-        <input type="submit" id="request" value="Make Request">
-      </form>
-    </div>
+        <form action="/request">
+          <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+          <input type="submit" id="request" value="Make Request">
+        </form>
+      </div>
+    <% end %>
   <%end%>
 
 </div>
