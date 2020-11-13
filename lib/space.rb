@@ -4,6 +4,7 @@ require 'time'
 class Space
 
   attr_reader :id, :name, :owner, :availability, :description, :date, :price
+  attr_writer :availability
 
   def initialize(id:,name:, owner:, availability:, description:, date:, price:)
     @id = id
