@@ -25,7 +25,7 @@ describe Space do
 
   describe '.create' do
     it '.create a new space' do
-      space = Space.create(name: 'Shed', owner: 'Joe', availability: true, description: 'Lots of spiders', date: '2020-11-10', price: 2)
+      space = Space.create(name: 'Shed', owner: 'Joe', availability: true, description: 'Lots of spiders', date: '2020-11-10', price: 2, renter: nil)
       persisted_data = PG.connect(dbname: 'makersbnb_test').query("SELECT * FROM spaces WHERE id = #{space.id};")
 
       expect(space).to be_a Space

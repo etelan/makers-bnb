@@ -1,0 +1,99 @@
+<link href="<%= url('/sidebar.css') %>" rel="stylesheet" type="text/css" />
+<link href="<%= url('/home.css') %>" rel="stylesheet" type="text/css" />
+<link href="<%= url('/search.css') %>" rel="stylesheet" type="text/css" />
+
+<style>
+  .transbox {
+      margin: 30px;
+      background-color: #ffffff;
+      border: 1px solid black;
+      opacity: 0.4;
+  }
+
+  .transbox p {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
+  .transbox form {
+    margin: 5%;
+    font-weight: bold;
+    color: red;
+  }
+
+  .transbox h1 {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+  .transbox h2 {
+    margin: 5%;
+    font-weight: bold;
+    color: black;
+  }
+
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #221e1e;
+    display: block;
+  }
+</style>
+
+<!-- Side navigation -->
+<div class="sidenav">
+  <a href="login">Login</a>
+  <a href="sign-up">Signup</a>
+  <a href="search">All Listings</a>
+  <a href="listings">Your Places</a>
+  <a href="your-bookings" style="color:#325438;">Your Bookings</a>
+  <a href="notifications">Notifications</a>
+  <a href="/">Sign Out</a>
+</div>
+
+<!-- Everything not in the sidebar -->
+<div class="main" >
+
+    <!-- Title -->
+    <h1 style="color:#C0C0C0"> Your Bookings, <%=@user.username%> </h1>
+
+    <!-- For each place -->
+    <%@places.each do |place|%>
+
+      <!-- If the current signed in user is the owner, show it.-->
+      <%if place.renter == @user.username%>
+
+        <div class="transbox">
+          <h1> <%=place.name%> </h1>
+          <h2> £<%=place.price%> per night</h2>
+          <p> <%=place.description%> </p>
+          <p> <%=place.date%> </p>
+
+          <!-- If it is available, show the button that says available. -->
+          <% if place.availability %>
+
+            <form action='/available-set' method='post'>
+              <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+              <input type="submit" name="available-toggle" value="Available">
+            </form>
+
+          <!-- If it isnt available, show the button that says unavailable. -->
+          <% else %>
+
+            <form action='/available-set' method='post'>
+              <input type="hidden" id="place_id" name="id" value=<%=place.id%>>
+              <input type="submit" name="available-toggle" value="Unavailable">
+            </form>
+          <% end %>
+
+        </div>
+
+      <%end%>
+
+    <%end%>
+
+
+</div>

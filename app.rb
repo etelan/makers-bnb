@@ -73,16 +73,24 @@ class MakersBnb < Sinatra::Base
       availability: Space.date_available?(params[:date]),
       description: params[:description],
       date: params[:date],
-      price: params[:price])
+      price: params[:price],
+      renter: nil)
 
     redirect '/listings'
   end
 
-  post '/request-handler' do 
+  get '/your-bookings' do
+    @user = User.find(session[:user_id])
+    @places = Space.all
+    erb :your_bookings
+  end
+
+  post '/request-handler' do
+    @user = User.find(session[:user_id])
     @id = params[:id]
-    Request.accept(id: @id.to_i)
-    redirect '/search'
-  end 
+    Request.accept(id: @id.to_i, requester: @user)
+    redirect '/your-bookings'
+  end
 
   run! if app_file == $0
 end
