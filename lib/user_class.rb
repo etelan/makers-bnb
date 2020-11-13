@@ -48,7 +48,6 @@ class User
     end
      result = connection.exec("SELECT * FROM users WHERE id = #{number}")
      User.new(id: result[0]['id'], username: result[0]['username'], password: result[0]['password'])
-     # @id = session[:user_id]
   end
 
   def self.delete(id:)
